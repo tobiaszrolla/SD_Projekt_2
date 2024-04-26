@@ -7,38 +7,38 @@ int HeapPriorityQueue::parent(int i){
 };
 //aby znaleźć lewe dziecko naleźy index rodzica przesunąć w lewo + 1
 int HeapPriorityQueue::left(int i){
-    return(((i+1)<<1) - 1);
+    return((i<<1) + 1);
 };
 //aby znaleźć lewe dziecko naleźy index rodzica przesunąć w lewo + 2
 int HeapPriorityQueue::right(int i){
-    return(((i+1)<<1));
+    return((i<<1) + 2);
 };
+
+
 //porównuje elementy element o najmniejszym priorytecie idzie na przybliża się do przodu
 void HeapPriorityQueue::hepify(int start_element){
     int l_child = left(start_element);
     int r_child = right(start_element);
-    if(r_child > size){
-        if( array[l_child].priority > array[start_element].priority){
-            swap(&array[l_child], &array[r_child]);
-        }
+    int p_place = start_element;
+    //gdy prawy poza tablicom rodzic porównaj z lewym
+    if(l_child < size && array[l_child].priority > array[p_place].priority){
+        p_place = l_child;
     }
-    else{
-        if(array[r_child].priority > array[l_child].priority || array[r_child].priority > array[start_element].priority){
-            swap(&array[r_child], &array[l_child]);
-        }
-        if( array[l_child].priority > array[start_element].priority){
-            swap(&array[l_child], &array[r_child]);
-        }
+    if(r_child < size && array[r_child].priority > array[p_place].priority){
+        p_place = r_child;
+    }
+    if(p_place != start_element){
+        swap(&array[p_place], &array[start_element]);
+        //jak już zamienimy rodzica z dzieckiem trzeba sprawdzić jak wpłynie to na kolejność poniżej
+        hepify(p_place);
     }
 };
 // tworzymy kopiec maksymalny w którym potem zmienia 1 i ostatni element
 void HeapPriorityQueue::max_heap(){
 //pętla zaczyna się na ostatnim rodzicu ponieważ dekrementując karzdy kolejny element też jest rodzicem
-    for(int i = parent(size-1); i >= 0; i--){
+    for(int i = parent(size-1); i >= 0; --i){
         hepify(i);
     }
-//zmiana ostatniego i pierwszego elementu na array list łatwiej zmineić pierwszy i ostatni element
-    //swap(&array[0], &array[size - 1]);
 
 };
 //zamienia wartości w tablicy
@@ -75,12 +75,21 @@ void HeapPriorityQueue::swap(Element* e_1,Element* e_2){
     max_heap(); 
  }
  int HeapPriorityQueue::peek(){
-    return(array[size-1].value);
+    return(array[0].value);
  }
+ //najpierw dekrementuje rozmiar bo mniej obliczeń poza tą funkcją element
+ //usuwany nie jest brany pod uwagę
  int HeapPriorityQueue::extract_max(){
-    return(array[size-1].value);
-    size = size;
-    max_heap();
+    if(size == 0){
+        std::cout<<"Pusta tablica"<<std::endl;
+    }
+    else{
+        size--;
+        //zmiana ostatniego i pierwszego elementu na array list łatwiej zmineić pierwszy i ostatni element
+        swap(&array[0], &array[size]);
+        max_heap();
+        return(array[size].value);
+    }
  }
 bool HeapPriorityQueue::modify_key(int e, int p){
     for(int i = 0; i< size; i++){

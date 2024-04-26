@@ -12,12 +12,16 @@ int main(){
     heap.insert(55,12);
     heap.insert(5,500);
     heap.insert(77,300);
+    heap.insert(5,23);
+    heap.insert(15,129);
 
+    cout<<heap.return_size()<<endl;
     heap.display();
-    /*cout<<heap.return_size()<<endl;
     cout<<heap.extract_max()<<endl;
+    heap.display();
     cout<<heap.return_size()<<endl;
     cout<<heap.extract_max()<<endl;
-    cout<<heap.return_size()<<endl;*/
+    heap.insert(295,10);
+    heap.display();
     return(0);
 }
