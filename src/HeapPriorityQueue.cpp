@@ -31,6 +31,7 @@ void HeapPriorityQueue::hepify(int start_element){
         swap(&array[p_place], &array[start_element]);
         //jak już zamienimy rodzica z dzieckiem trzeba sprawdzić jak wpłynie to na kolejność poniżej
         hepify(p_place);
+        
     }
 };
 // tworzymy kopiec maksymalny w którym potem zmienia 1 i ostatni element
@@ -72,7 +73,18 @@ void HeapPriorityQueue::swap(Element* e_1,Element* e_2){
     array[size].priority = p;
     array[size].value = e;
     size++;
-    max_heap(); 
+    if(size != 1)
+    {
+        int last_p = parent(size - 1);
+        while(last_p != 0)
+        {
+            hepify(last_p);
+            last_p = parent(last_p);
+        }
+        hepify(0);
+    }
+    
+
  }
  int HeapPriorityQueue::peek(){
     return(array[0].value);
@@ -82,12 +94,13 @@ void HeapPriorityQueue::swap(Element* e_1,Element* e_2){
  int HeapPriorityQueue::extract_max(){
     if(size == 0){
         std::cout<<"Pusta tablica"<<std::endl;
+        return(1);
     }
     else{
         size--;
         //zmiana ostatniego i pierwszego elementu na array list łatwiej zmineić pierwszy i ostatni element
         swap(&array[0], &array[size]);
-        max_heap();
+        hepify(0);
         return(array[size].value);
     }
  }
@@ -95,7 +108,13 @@ bool HeapPriorityQueue::modify_key(int e, int p){
     for(int i = 0; i< size; i++){
         if(array[i].value == e){
             array[i].priority = p;
-            max_heap();
+            int parent_iter = parent(i);
+            while(parent_iter != 0)
+            {
+                hepify(parent_iter);
+                parent_iter = parent(parent_iter);
+            }
+            hepify(0);
             return(true);
         }
     }

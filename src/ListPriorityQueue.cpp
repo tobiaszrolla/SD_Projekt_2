@@ -1,4 +1,4 @@
-#include "ListPriorityQueue.h"
+#include "../include/ListPriorityQueue.h"
 #include <iostream>
 
 using namespace std;
@@ -23,7 +23,7 @@ void ListPriorityQueue::insert(int e, int p) {
 }
 
 int ListPriorityQueue::extract_max() {
-        if (!head) return;
+        //if (!head) return;
 
         Node* maxNode = head;
         Node* temp = head->next;
@@ -54,7 +54,7 @@ int ListPriorityQueue::extract_max() {
     }
 
  int ListPriorityQueue::peek() {
-        if (!head) return; 
+        //if (!head) return; 
 
         Node* maxNode = head;
         Node* temp = head->next;

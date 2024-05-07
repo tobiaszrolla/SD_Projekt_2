@@ -1,6 +1,7 @@
 #include <iostream>
 #include "../include/HeapPriorityQueue.h"
 #include "../include/PriorityQueue.h"
+#include "../include/ListPriorityQueue.h"
 using namespace std;
 void menu(PriorityQueue* queue){
     bool wyjscie = false;
@@ -28,14 +29,7 @@ void menu(PriorityQueue* queue){
                 cin>>element;
                 cout<<"Podaj priorytet"<<endl;
                 cin>>priorytet;
-                //bool zmiana = 
                 queue->modify_key(element,priorytet);
-                /*if(zmiana == true){
-                    cout<<"Udana zmian priorytetu"<<endl;
-                }
-                else{
-                    cout<<"Nie udana zmian priorytetu"<<endl;
-                }*/
                 break;
             case '3':
                 cout<<"Element o największym priorytecie "<<queue->peek()<<endl;
@@ -58,6 +52,7 @@ void menu(PriorityQueue* queue){
 }
 int main(){
     HeapPriorityQueue heap_queue;
+    ListPriorityQueue list_queue;
     PriorityQueue* queue;
     bool wyjscie = false;
     char key;
@@ -72,7 +67,8 @@ int main(){
                 menu(queue);
                 break;
             case '2':
-                //chwilowo brak
+                queue = &list_queue;
+                menu(queue);
                 break;
             case 'Q':
                 wyjscie = true;
