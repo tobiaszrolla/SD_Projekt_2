@@ -5,15 +5,22 @@ using namespace std;
 
 Node::Node(int v, int p) : value(v), priority(p), next(nullptr) {}
 ListPriorityQueue::ListPriorityQueue() : head(nullptr), size(0) {}
+ListPriorityQueue::~ListPriorityQueue() {                   
+        while (head != nullptr) {    
+            Node* temp = head;    
+            head = head->next;      
+            delete temp;             
+        }
+    }
 
 void ListPriorityQueue::insert(int e, int p) {
     Node* newNode = new Node(e, p);
-    if (!head || newNode->priority > head->priority) {
+    if (!head || newNode->priority > head->priority) {   //Jeśli lista jest pusta lub nowy element ma największy klucz, ustawiamy go na początek
         newNode->next = head;
         head = newNode;
-    } else {
+    } else {                                             //W przeciwnym wypadku przeszukujemy listę, aż natrafimy na element z mniejszym kluczem
            Node* temp = head;
-        while (temp->next && temp->next->priority >= newNode->priority) {
+        while (temp->next && temp->next->priority >= newNode->priority) {   
             temp = temp->next;
         }
         newNode->next = temp->next;
@@ -23,15 +30,14 @@ void ListPriorityQueue::insert(int e, int p) {
 }
 
 int ListPriorityQueue::extract_max() {
-        //if (!head) return;
 
         Node* maxNode = head;
         Node* temp = head->next;
         Node* prev = head;
         Node* maxPrev = nullptr;
 
-        // Znajdujemy węzeł z najwyższym priorytetem
-        while (temp) {
+       
+        while (temp) {          // Szukamy elementu z najwyższym priorytetem
             if (temp->priority > maxNode->priority) {
                 maxNode = temp;
                 maxPrev = prev;
@@ -40,13 +46,14 @@ int ListPriorityQueue::extract_max() {
             temp = temp->next;
         }
 
-        // Usuwamy znaleziony węzeł z listy
-        if (maxPrev) {
+        //Ustawiamy next poprzedzającego węzła na next węzła do usunięcia
+        if (maxPrev) {      
             maxPrev->next = maxNode->next;
         } else {
             head = maxNode->next;
         }
 
+        //Usuwamy znaleziony węzeł
         int maxValue = maxNode->value;
         delete maxNode;
         size--;
@@ -54,13 +61,12 @@ int ListPriorityQueue::extract_max() {
     }
 
  int ListPriorityQueue::peek() {
-        //if (!head) return; 
 
         Node* maxNode = head;
         Node* temp = head->next;
 
-        // Znajdź węzeł z najwyższym priorytetem
-        while (temp) {
+        
+        while (temp) {        
             if (temp->priority > maxNode->priority) {
                 maxNode = temp;
             }
@@ -73,13 +79,13 @@ int ListPriorityQueue::extract_max() {
 bool ListPriorityQueue::modify_key(int e, int p) {
         Node* node = head;
         Node* prev = nullptr;
-        // Znajdujemy węzeł do zmodyfikowania
-        while (node && !(node->value == e)) {
+       
+        while (node && !(node->value == e)) {     // Znajdujemy węzeł do zmodyfikowania
             prev = node;
             node = node->next;
         }
 
-        // Jeśli węzeł istnieje, modyfikujemy jego priorytet
+        // Jeśli węzeł istnieje, modyfikujemy go, usuwając obecny i wstawiając nowy z obecnym elementem i nowym priorytetem
         if (node) {
             if (prev) {
                 prev->next = node->next;
