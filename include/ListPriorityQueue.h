@@ -18,6 +18,7 @@ class ListPriorityQueue : public PriorityQueue{
         int size;
     public:
         ListPriorityQueue();
+        ~ListPriorityQueue();
         void insert(int e, int p);
         int extract_max();
         int peek();
